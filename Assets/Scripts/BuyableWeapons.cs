@@ -8,4 +8,5 @@ public class BuyableWeapons : MonoBehaviour
     public int ammoCost = 50;
     public int ID = 0;
     public bool packAPunched = false;
+    public bool machine = false;
 }

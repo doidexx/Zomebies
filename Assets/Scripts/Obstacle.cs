@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Obstables : MonoBehaviour
+public class Obstacle : MonoBehaviour
 {
-    public int cost = 10;
+    public int cost = 0;
 
     public void Buy()
     {

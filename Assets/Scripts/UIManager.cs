@@ -26,21 +26,6 @@ public class UIManager : MonoBehaviour
 
     public void UpdateBuyableText(bool buyingWeapon)
     {
-        if (buyableText != null)
-        {
-            string weaponName = Player.newWeaponToBuy.name;
-            string weaponCost = Player.newWeaponToBuy.cost.ToString();
-            string weaponAmmoCost = Player.newWeaponToBuy.ammoCost.ToString();
-            if (buyingWeapon == true)
-            {
-                if (weaponCost == "0")
-                    buyableText.text = weaponName;
-                else
-                    buyableText.text = weaponName + ": $" + weaponCost;
-            }
-            else
-                buyableText.text = weaponName + " Ammo" + ": $" + weaponCost;
-        }
     }
 
     private void UpdatePointsText()

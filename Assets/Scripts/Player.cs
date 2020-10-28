@@ -7,21 +7,22 @@ public class Player : MonoBehaviour
 {
     [Header("Stats")]
     public float movementSpeed = 10f;
-    public float horizontalMovementMultiplier = .7f;
     public float jumpHeight = 10f;
+    [Header("Settings")]
+    public float interactionDistance = 3f;
     public float gravityMultiplier = 2f;
-    [Header("Other")]
-    public GameObject flashlight = null;
-    public float pickupDistance = 3f;
+    public float horizontalMovementMultiplier = .7f;
+    [Header("Weapons")]
     public Weapon[] weapons = new Weapon[2];
     public int currentWeaponIndex = 0;
+    [Header("Drinks")]
+    public Drink[] drinks = new Drink[4];
 
     float vertical = 0;
 
     CharacterController controller = null;
     GameManager gameManager = null;
     UIManager uiManager = null;
-    public static BuyableWeapons newWeaponToBuy = null;
     public static RaycastHit hit;
 
     private void Start() 
@@ -34,9 +35,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         Movement();
-        Flashlight();
-        SwitchWeapons();
-        Interactions();
+        CheckInteractions();
         Physics.Raycast(GetRay(), out hit, Mathf.Infinity);
         if (weapons[currentWeaponIndex] != null)
             uiManager.UpdateAmmoText(weapons[currentWeaponIndex]);
@@ -70,125 +69,124 @@ public class Player : MonoBehaviour
         vertical += Physics.gravity.y * Time.deltaTime * gravityMultiplier;
     }
 
-    private void Flashlight()
+    private void CheckInteractions()
     {
-        if (flashlight == null) return;
-        if (Input.GetKeyDown(KeyCode.F))
-            flashlight.SetActive(!flashlight.activeSelf);
-    }
-
-    private void Interactions()
-    {
-        RaycastHit localHit;
-        if (Physics.Raycast(Player.GetRay(), out localHit, pickupDistance))
+        RaycastHit hit;
+        if (!Physics.Raycast(GetRay(), out hit, interactionDistance))
         {
-            WeaponPickup(localHit);
-            InteractWithObstacles(localHit);
-            InteractWithMachines(localHit);
+            //turn UI off
+            return;
         }
+        Drink drink = hit.transform.GetComponent<Drink>();
+        MysteryBox mysteryBox = hit.transform.GetComponent<MysteryBox>();
+        PackAPunch packAPunch = hit.transform.GetComponent<PackAPunch>();
+        BuyableWeapons buyable = hit.transform.GetComponent<BuyableWeapons>();
+        Obstacle obstacle = hit.transform.GetComponent<Obstacle>();
+        if (!Input.GetKeyDown(KeyCode.E))
+            return;
+        if (buyable != null)
+            InteractWithBuyable(buyable);
+        else if (drink != null)
+            InteractWithDrink(drink);
+        else if (mysteryBox != null)
+            InteractWithMysteryBox(mysteryBox);
+        else if (packAPunch != null)
+            InteractWithPackAPunch(packAPunch);
+        else if (obstacle != null)
+        {
+            if (gameManager.points < obstacle.cost)
+                return;
+            obstacle.Buy();
+            gameManager.ConsumePoints(obstacle.cost);
+        }
+
     }
 
-    private void WeaponPickup(RaycastHit hit)
+    private void InteractWithDrink(Drink drink)
     {
-        newWeaponToBuy = hit.transform.GetComponent<BuyableWeapons>();
-        if (newWeaponToBuy == null)
+        //Turn UI on with drink drinkMame
+        if (gameManager.points >= drink.cost)
+            drink.Buy(this);
+    }
+
+    private void InteractWithMysteryBox(MysteryBox mysteryBox)
+    {
+        //Turn UI on with drink drinkMame
+        if (mysteryBox.inUse == true)
+            return;
+        if (gameManager.points < mysteryBox.cost)
+            return;
+        mysteryBox.Buy(this);
+        gameManager.ConsumePoints(mysteryBox.cost);
+    }
+
+    private void InteractWithPackAPunch(PackAPunch packAPunch)
+    {
+        if (packAPunch.inUse == true)
+            return;
+        if (weapons[currentWeaponIndex] == null || weapons[currentWeaponIndex].packed == true)
+            return;
+        if (gameManager.points < packAPunch.cost)
+            return;
+        packAPunch.Buy(this);
+        gameManager.ConsumePoints(packAPunch.cost);
+    }
+
+    private void InteractWithBuyable(BuyableWeapons buyable)
+    {
+        if (gameManager.points < buyable.cost)
             return;
 
-        Weapon newWeapon = CheckOwnedWeapon(newWeaponToBuy.ID);
-        if (newWeapon == null || newWeaponToBuy.ID != newWeapon.ID)
+        if (GetOwnWeapon(buyable.ID) != null)
         {
-            PurchaseWeapon(newWeaponToBuy);
-            uiManager.UpdateBuyableText(true);
+            GetOwnWeapon(buyable.ID).MaxOutAmmo();
+            gameManager.ConsumePoints(buyable.ammoCost);
         }
         else
         {
-            PurchaseAmmo(newWeaponToBuy.ammoCost, newWeapon);
-            uiManager.UpdateBuyableText(false);
+            AssignWeapon(buyable.ID);
+            gameManager.ConsumePoints(buyable.cost);
+        }
+        if (buyable.machine)
+            buyable.gameObject.SetActive(false);
+    }
+
+    private void AssignWeapon(int id)
+    {
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            if (weapons[i] != null)
+                continue;
+            weapons[i] = gameManager.weapons[id];
+            break;
         }
     }
 
-    //make it so it return the ID in stead
-    public Weapon CheckOwnedWeapon(int ID)
+    public Weapon GetOwnWeapon(int ID)
     {
-        foreach (Weapon w in weapons)
+        foreach (Weapon weapon in weapons)
         {
-            if (w == null)
+            if (weapon == null)
                 continue;
-            if (w.ID == ID)
-                return w;
+            if (weapon.ID == ID)
+                return weapon;
         }
         return null;
     }
 
-    private void SwitchWeapons()
+    public void ActivateDrink(Drink drink)
     {
-        int index = 0;
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        for (int i = 0; i < drinks.Length; i++)
         {
-            index = 0;
-            if (index == currentWeaponIndex)
-                return;
-            SwtichCurrentWeapon(index);
+            if (drinks[i] == drink)
+                break;
+            if (drinks[i] != null)
+                continue;
+            drinks[i] = drink;
+            gameManager.ConsumePoints(drink.cost);
+            drink.GetEffect(this);
+            break;
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            index = 1;
-            if (index == currentWeaponIndex)
-                return;
-            SwtichCurrentWeapon(index);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            index = 2;
-            if (index == currentWeaponIndex)
-                return;
-            SwtichCurrentWeapon(index);
-        }
-    }
-
-    public void SwtichCurrentWeapon(int index)
-    {
-        if (index == weapons.Length || weapons[index] == null)
-            return;
-        if (weapons[currentWeaponIndex] != null)
-            weapons[currentWeaponIndex].gameObject.SetActive(false);
-        currentWeaponIndex = index;
-        weapons[currentWeaponIndex].gameObject.SetActive(true);
-    }
-
-    private void PurchaseWeapon(BuyableWeapons weapon)
-    {
-        if (Input.GetKeyDown(KeyCode.E) && weapon.cost <= gameManager.points)
-        {
-            gameManager.ConsumePoints(weapon.cost);
-
-            for (int i = 0; i < weapons.Length; i++)
-            {
-                if (weapons[i] != null)
-                    continue;
-                ReplaceWeaponFor(weapon.ID, i, weapon.packAPunched);
-                currentWeaponIndex = i;
-                if (weapon.cost == 0)
-                    weapon.gameObject.SetActive(false);
-                return;
-            }
-            ReplaceWeaponFor(weapon.ID, currentWeaponIndex, weapon.packAPunched);
-            if (weapon.cost == 0)
-                weapon.gameObject.SetActive(false);
-        }
-    }
-
-    public void ReplaceWeaponFor(int ID, int slot, bool packed)
-    {
-        if (weapons[slot] != null)
-            weapons[slot].gameObject.SetActive(false);
-        if (packed == false)
-            weapons[slot] = gameManager.GetNewWeapon(ID);
-        else
-            weapons[slot] = gameManager.GetPakckedWeapon(ID);
-        weapons[slot].MaxOutAmmo();
-        weapons[slot].gameObject.SetActive(true);
-        SwtichCurrentWeapon(slot);
     }
 
     public void RemoveActiveGun()
@@ -200,43 +198,6 @@ public class Player : MonoBehaviour
             currentWeaponIndex++;
         weapons[index].gameObject.SetActive(false);
         weapons[index] = null;
-        SwtichCurrentWeapon(currentWeaponIndex);
-    }
-
-    private void PurchaseAmmo(int cost, Weapon weapon)
-    {
-        if (Input.GetKeyDown(KeyCode.E) && cost <= gameManager.points)
-        {
-            if (weapon.currentAmmo == weapon.maxAmmo)
-                return;
-            gameManager.ConsumePoints(cost);
-            weapon.MaxOutAmmo();
-        }
-    }
-
-    private void InteractWithObstacles(RaycastHit hit)
-    {
-        Obstables obstacle = hit.transform.GetComponent<Obstables>();
-        if (obstacle == null)
-        {
-            //pop up next zone cost
-            return;
-        }
-        if (!Input.GetKeyDown(KeyCode.E) || obstacle.cost > gameManager.points)
-            return;
-        gameManager.ConsumePoints(obstacle.cost);
-        obstacle.Buy();
-    }
-
-    private void InteractWithMachines(RaycastHit hit)
-    {
-        VendingMachine machine = hit.transform.GetComponent<VendingMachine>();
-        if (machine == null)
-            return;
-        
-        if (!Input.GetKeyDown(KeyCode.E) || machine.cost > gameManager.points)
-            return;
-        machine.GetEffect(this, weapons[currentWeaponIndex]);
     }
 
     public void AddWeaponSlot()
@@ -259,8 +220,14 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void SwitchCurrentWeapon()
+    {
+        
+    }
+
     public void Dead()
     {
+        drinks = new Drink[4];
         ReduceWeaponSlots();
         GameManager.ClearDrinks();
     }

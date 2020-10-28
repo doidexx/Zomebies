@@ -109,7 +109,7 @@ NavMeshSettings:
     agentRadius: 0.2
     agentHeight: 2
     agentSlope: 60
-    agentClimb: 0.61
+    agentClimb: 1
     ledgeDropHeight: 4
     maxJumpAcrossDistance: 0
     minRegionArea: 2
@@ -153,10 +153,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 75904626}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41764b1ff63eec44fade8fe2f27b9d58, type: 3}
+  m_Script: {fileID: 11500000, guid: 471b4c0d9c37bdd4f856939923ea9a2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 10
+  cost: 0
 --- !u!65 &75904631
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -395,6 +395,7 @@ MonoBehaviour:
   ammoCost: 0
   ID: 0
   packAPunched: 0
+  machine: 1
 --- !u!65 &192205399
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -793,6 +794,7 @@ MonoBehaviour:
   ammoCost: 0
   ID: 2
   packAPunched: 0
+  machine: 1
 --- !u!65 &451394169
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1032,7 +1034,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.9999995, y: 2.7499998, z: 1.1267959}
   m_Center: {x: -0.5000001, y: 1.3749999, z: 0.06339705}
---- !u!114 &551887181
+--- !u!114 &551887182
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1041,27 +1043,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 551887178}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0281ba2773b9a334a8d83092f9cb4cf6, type: 3}
+  m_Script: {fileID: 11500000, guid: 24241ff8ddf49c64a9c14d4ef19fb54f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   drinkName: Mule Kick
-  cost: 10
-  doubleTap: 0
-  speedCola: 0
-  juggernog: 0
-  quickRevive: 0
-  muleKick: 1
-  electricCherry: 0
-  mysteryBox: 0
-  packAPunch: 0
-  buyablePackedWeapons: []
-  inUse: 0
-  packingTime: 2
-  loopTime: 8
-  buyTime: 10
-  showTime: 0.2
-  mysteryBoxSpawns: {fileID: 0}
-  buyableWeapons: {fileID: 0}
+  cost: 0
+  owned: 0
 --- !u!1001 &554424401
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1470,10 +1457,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32ac943905898ad4c92bb20c6aca983a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 10
-  ammoCost: 10
+  cost: 0
+  ammoCost: 0
   ID: 0
   packAPunched: 0
+  machine: 0
 --- !u!65 &787855170
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7368,11 +7356,11 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.495, z: 0.275}
+  m_Extents: {x: 0.5, y: 0.25, z: 0.25}
   m_MoveThreshold: 0.1
-  m_Carve: 1
+  m_Carve: 0
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0.48, z: 0}
+  m_Center: {x: 0, y: 0.24, z: 0.04}
   m_TimeToStationary: 0.5
 --- !u!65 &990617640
 BoxCollider:
@@ -7385,14 +7373,14 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.0386838, y: 0.45648327, z: 0.56052244}
-  m_Center: {x: 0.019342067, y: 0.2717584, z: 0.012153865}
+  m_Size: {x: 1, y: 0.5, z: 0.5}
+  m_Center: {x: 0, y: 0.25, z: 0.03}
 --- !u!4 &990617641 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b2e3ffad7224b6b4b93e8b4dbb117d18, type: 3}
   m_PrefabInstance: {fileID: 1918377303}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &990617642
+--- !u!114 &990617643
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7401,27 +7389,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 990617638}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0281ba2773b9a334a8d83092f9cb4cf6, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b8059463f5b03c45b646d08fd1107bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drinkName: Mystery Box
-  cost: 10
-  doubleTap: 0
-  speedCola: 0
-  juggernog: 0
-  quickRevive: 0
-  muleKick: 0
-  electricCherry: 0
-  mysteryBox: 1
-  packAPunch: 0
-  buyablePackedWeapons: []
-  inUse: 0
-  packingTime: 2
-  loopTime: 8
-  buyTime: 10
+  _name: Mystery Box
+  cost: 0
+  rotatingTime: 8
   showTime: 0.2
-  mysteryBoxSpawns: {fileID: 2015211263}
-  buyableWeapons: {fileID: 1397073471}
+  despawnTime: 10
+  inUse: 0
+  weapons:
+  - {fileID: 451394168}
+  - {fileID: 1584817084}
+  - {fileID: 192205398}
 --- !u!1 &1012824115 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3202410203639517821, guid: f7c446c5e0084ee4fbe94072cf5152b8, type: 3}
@@ -7502,6 +7482,101 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!1001 &1045754669
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2017381245}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 14.7
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 25.511
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
+      propertyPath: m_Name
+      value: Vending Machine Test (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
+--- !u!4 &1045754670 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
+  m_PrefabInstance: {fileID: 1045754669}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1045754671 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
+  m_PrefabInstance: {fileID: 1045754669}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1045754672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045754671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57e703b245908d418635f46b1a45e05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drinkName: Speed Cola
+  cost: 0
+  owned: 0
+--- !u!65 &1045754674
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045754671}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.9999995, y: 2.7499998, z: 1.1267959}
+  m_Center: {x: -0.5000001, y: 1.3749999, z: 0.06339705}
 --- !u!1001 &1054947219
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7689,15 +7764,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 5
-  horizontalMovementMultiplier: 0.7
   jumpHeight: 10
+  interactionDistance: 3
   gravityMultiplier: 3
-  flashlight: {fileID: 845410505}
-  pickupDistance: 2
+  horizontalMovementMultiplier: 0.7
   weapons:
   - {fileID: 356730828}
   - {fileID: 0}
   currentWeaponIndex: 0
+  drinks:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &1138190069
 GameObject:
   m_ObjectHideFlags: 0
@@ -8436,6 +8515,7 @@ MonoBehaviour:
   ammoCost: 0
   ID: 0
   packAPunched: 1
+  machine: 1
 --- !u!65 &1440157919
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8934,8 +9014,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1534008579}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.17, z: 0}
-  m_LocalScale: {x: 10, y: 1, z: 10}
+  m_LocalPosition: {x: 0, y: -1.17, z: 39.4}
+  m_LocalScale: {x: 6.5896673, y: 1, z: 2.625}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -8991,6 +9071,7 @@ MonoBehaviour:
   ammoCost: 0
   ID: 1
   packAPunched: 0
+  machine: 1
 --- !u!65 &1584817085
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9569,10 +9650,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32ac943905898ad4c92bb20c6aca983a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 10
-  ammoCost: 10
+  cost: 0
+  ammoCost: 0
   ID: 2
   packAPunched: 0
+  machine: 0
 --- !u!65 &1825561102
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9832,7 +9914,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b2e3ffad7224b6b4b93e8b4dbb117d18, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b2e3ffad7224b6b4b93e8b4dbb117d18, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9915,10 +9997,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32ac943905898ad4c92bb20c6aca983a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 10
-  ammoCost: 10
+  cost: 0
+  ammoCost: 0
   ID: 1
   packAPunched: 0
+  machine: 0
 --- !u!65 &1978805068
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10012,7 +10095,7 @@ Transform:
   - {fileID: 189093912}
   - {fileID: 739335008}
   m_Father: {fileID: 2017381245}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2017381244
 GameObject:
@@ -10042,6 +10125,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 551887179}
+  - {fileID: 1045754670}
   - {fileID: 990617641}
   - {fileID: 2015211263}
   m_Father: {fileID: 1155856923}
@@ -10109,37 +10193,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7e85ab5dc2744e84cbb821934acb9f2e, type: 3}
   m_PrefabInstance: {fileID: 2108780847}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2108780849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2108780848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0281ba2773b9a334a8d83092f9cb4cf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  drinkName: Pack a punch
-  cost: 10
-  doubleTap: 0
-  speedCola: 0
-  juggernog: 0
-  quickRevive: 0
-  muleKick: 0
-  electricCherry: 0
-  mysteryBox: 0
-  packAPunch: 1
-  buyablePackedWeapons:
-  - {fileID: 1440157918}
-  inUse: 0
-  packingTime: 4
-  loopTime: 8
-  buyTime: 10
-  showTime: 0.2
-  mysteryBoxSpawns: {fileID: 0}
-  buyableWeapons: {fileID: 0}
 --- !u!4 &2108780852 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7e85ab5dc2744e84cbb821934acb9f2e, type: 3}
@@ -10158,6 +10211,25 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.99999994, y: 1.9999999, z: 0.99999994}
   m_Center: {x: 0, y: 0.99999994, z: 0}
+--- !u!114 &2108780854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108780848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 078c97bc90a606547b8ca76332851dcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: PackAPunch
+  cost: 0
+  waitTime: 8
+  despawnTime: 10
+  inUse: 0
+  weapons:
+  - {fileID: 1440157918}
 --- !u!1 &2118282969 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8267939099749913583, guid: f7c446c5e0084ee4fbe94072cf5152b8, type: 3}

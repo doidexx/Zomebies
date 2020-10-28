@@ -2,15 +2,15 @@
 ------------------------------------------------------------------------
 Machines Checklist
 ------------------------------------------------------------------------
+Double Tap                      
+Juggernog                       Done
 Mule kick                       Done
-Double Tap                      Done
-Mystery Box                     Done
-Pack a Punch                    Done
+Speed Cola                      
+Quick Revive                    
+Electric Cherry                 
 
-Quick Revive
-Speed Cola
-Juggernog
-Electric Cherry
+Pack a Punch                    Done
+Mystery Box                     Done
 
 ------------------------------------------------------------------------
 (Zombie) TODO
@@ -33,7 +33,10 @@ Prevent Zombies from jumping    Done
 ------------------------------------------------------------------------
 (Player) TODO
 ------------------------------------------------------------------------
-Limit drinks to 4               
+Limit drinks to 4               Done
+Switch active Weapon            
+New weapons take empty space    Done
+replace active gun for new      
 
 ------------------------------------------------------------------------
 (Mistery Box)
@@ -41,6 +44,6 @@ Limit drinks to 4
 Loop through weapons            Done
 Lock on a gun                   Done
 Deactivate gun on pickup        Done
-Deactivate gun after a while
+Deactivate gun after a while    Done
 
 */
