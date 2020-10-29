@@ -26,13 +26,13 @@ public class Barricade : MonoBehaviour
         {
             GetComponentInChildren<MeshRenderer>().enabled = false;
             GetComponentInChildren<MeshCollider>().enabled = false;
-            link.activated = true;
+            // link.activated = true;
         }
         else
         {
             GetComponentInChildren<MeshRenderer>().enabled = true;
             GetComponentInChildren<MeshCollider>().enabled = true;
-            link.activated = false;
+            // link.activated = false;
         }
     }
 

@@ -8,7 +8,6 @@ public class UIManager : MonoBehaviour
     public Text pointsText = null;
     public Text roundText = null;
     public Text ammoText = null;
-    public Text buyableText = null;
     public Text interactableText = null;
 
     GameManager gameManager = null;
@@ -21,11 +20,6 @@ public class UIManager : MonoBehaviour
     private void Update()
     {
         UpdatePointsText();
-        buyableText.text = "";
-    }
-
-    public void UpdateBuyableText(bool buyingWeapon)
-    {
     }
 
     private void UpdatePointsText()

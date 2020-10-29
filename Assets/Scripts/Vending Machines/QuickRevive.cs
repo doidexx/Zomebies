@@ -9,5 +9,9 @@ public class QuickRevive : Drink
 
     public override void GetEffect(Player player)
     {
+        Health playerHealth = player.GetComponent<Health>();
+        if (playerHealth == null)
+            return;
+        playerHealth.DecreaseReviveTime();
     }
 }

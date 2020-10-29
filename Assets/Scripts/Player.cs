@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Health))]
 public class Player : MonoBehaviour
 {
     [Header("Stats")]
@@ -19,7 +20,6 @@ public class Player : MonoBehaviour
     public Drink[] drinks = new Drink[4];
 
     float vertical = 0;
-    int weaponIndexer = 0;
 
     CharacterController controller = null;
     GameManager gameManager = null;
@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
 
     private void ScrollWeapon()
     {
-        weaponIndexer += (int)Input.mouseScrollDelta.y;
+        int weaponIndexer = currentWeaponIndex + (int)Input.mouseScrollDelta.y;
         if (weaponIndexer == currentWeaponIndex) return;
         if (weaponIndexer == weapons.Length)
             weaponIndexer = 0;
@@ -88,6 +88,7 @@ public class Player : MonoBehaviour
         if (!Physics.Raycast(GetRay(), out hit, interactionDistance))
         {
             //turn UI off
+            uiManager.UpdateInteractableText("");
             return;
         }
         Drink drink = hit.transform.GetComponent<Drink>();
@@ -95,8 +96,6 @@ public class Player : MonoBehaviour
         PackAPunch packAPunch = hit.transform.GetComponent<PackAPunch>();
         BuyableWeapons buyable = hit.transform.GetComponent<BuyableWeapons>();
         Obstacle obstacle = hit.transform.GetComponent<Obstacle>();
-        if (!Input.GetKeyDown(KeyCode.E))
-            return;
         if (buyable != null)
             InteractWithBuyable(buyable);
         else if (drink != null)
@@ -107,6 +106,9 @@ public class Player : MonoBehaviour
             InteractWithPackAPunch(packAPunch);
         else if (obstacle != null)
         {
+            uiManager.UpdateInteractableText(obstacle.blockedArea + ": $" + obstacle.cost.ToString());
+            if (CheckInteractionInput() == false)
+                return;
             if (gameManager.points < obstacle.cost)
                 return;
             obstacle.Buy();
@@ -114,9 +116,17 @@ public class Player : MonoBehaviour
         }
     }
 
+    private bool CheckInteractionInput()
+    {
+        return Input.GetKeyDown(KeyCode.E);
+    }
+
     private void InteractWithDrink(Drink drink)
     {
         //Turn UI on with drink drinkMame
+        uiManager.UpdateInteractableText(drink.drinkName + ": $" + drink.cost.ToString());
+        if (CheckInteractionInput() == false)
+            return;
         if (gameManager.points >= drink.cost)
             drink.Buy(this);
     }
@@ -124,6 +134,9 @@ public class Player : MonoBehaviour
     private void InteractWithMysteryBox(MysteryBox mysteryBox)
     {
         //Turn UI on with drink drinkMame
+        uiManager.UpdateInteractableText("Mystery Box" + ": $" + mysteryBox.cost.ToString());
+        if (CheckInteractionInput() == false)
+            return;
         if (mysteryBox.inUse == true)
             return;
         if (gameManager.points < mysteryBox.cost)
@@ -134,6 +147,10 @@ public class Player : MonoBehaviour
 
     private void InteractWithPackAPunch(PackAPunch packAPunch)
     {
+        if (weapons[currentWeaponIndex] != null)
+            uiManager.UpdateInteractableText(packAPunch.name + " " + weapons[currentWeaponIndex]._name);
+        if (CheckInteractionInput() == false)
+            return;
         if (packAPunch.inUse == true)
             return;
         if (weapons[currentWeaponIndex] == null || weapons[currentWeaponIndex].packed == true)
@@ -145,16 +162,23 @@ public class Player : MonoBehaviour
 
     private void InteractWithBuyable(BuyableWeapons buyable)
     {
+        
         if (gameManager.points < buyable.cost)
             return;
 
         if (GetOwnWeapon(buyable.ID) != null)
         {
+            uiManager.UpdateInteractableText(buyable.name + "Ammo: $" + buyable.ammoCost.ToString());
+            if (CheckInteractionInput() == false)
+            return;
             GetOwnWeapon(buyable.ID).MaxOutAmmo();
             gameManager.ConsumePoints(buyable.ammoCost);
         }
         else
         {
+            uiManager.UpdateInteractableText(buyable.name + ": $" + buyable.cost.ToString());
+            if (CheckInteractionInput() == false)
+            return;
             AssignWeapon(buyable.ID, buyable.packAPunched);
             gameManager.ConsumePoints(buyable.cost);
         }
@@ -234,18 +258,40 @@ public class Player : MonoBehaviour
         SwitchCurrentWeapon(index);
     }
 
-    public void ChangeNumberOfSlots(int slots)
+    public void AddWeaponSlot()
     {
         Weapon[] oldWeapons = weapons;
-        weapons = new Weapon[slots];
+        weapons = new Weapon[3];
         for (int i = 0; i < oldWeapons.Length; i++)
             weapons[i] = oldWeapons[i];
+    }
+
+    public void ReduceWeaponSlot()
+    {
+        Weapon[] oldWeapons = weapons;
+        weapons = new Weapon[2];
+        for (int i = 0; i < weapons.Length; i++)
+            weapons[i] = oldWeapons[i];
+    }
+
+    public bool CheckOwnDrinks(DrinkNames drink)
+    {
+        for (int i = 0; i < drinks.Length; i++)
+        {
+            if (drinks[i] == null)
+                continue;
+            if (drinks[i].drinkName == drink)
+                return true;
+        }
+        return false;
     }
 
     public void Dead()
     {
         drinks = new Drink[4];
-        ChangeNumberOfSlots(2);
+        SwitchCurrentWeapon(0);
+        ReduceWeaponSlot();
+        GetComponent<Health>().IncreaseReviveTime();
         GameManager.ClearDrinks();
     }
 }

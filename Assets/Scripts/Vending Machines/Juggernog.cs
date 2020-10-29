@@ -9,6 +9,10 @@ public class Juggernog : Drink
 
     public override void GetEffect(Player player)
     {
-        player.GetComponent<Health>().maxHealth *= 2;
+        Health playerHealth = player.GetComponent<Health>();
+        if (playerHealth == null)
+            return;
+        playerHealth.maxHealth *= 2;
+        playerHealth.healthPoints = playerHealth.maxHealth;
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public int points = 50;
-    public bool doublePoints = false;
+    public float doublePointsTime = 13f;
     public Weapon[] weapons = null;
     public Weapon[] packedWeapons = null;
 
@@ -17,9 +17,16 @@ public class GameManager : MonoBehaviour
     public static bool muleKick = false;
     public static bool electricCherry = false;
 
+    public float doublePointsTimer = Mathf.Infinity;
+
+    private void Update()
+    {
+        doublePointsTimer += Time.deltaTime;
+    }
+
     public void AddPoints(int income)
     {
-        if (doublePoints == false)
+        if (doublePointsTimer > doublePointsTime)
             points += income;
         else
             points += income * 2;

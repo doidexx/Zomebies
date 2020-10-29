@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
+    public string blockedArea = "";
     public int cost = 0;
 
     public void Buy()

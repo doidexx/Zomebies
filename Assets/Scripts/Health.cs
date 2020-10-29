@@ -7,9 +7,12 @@ public class Health : MonoBehaviour
 {
     public float healthPoints = 100;
     public float maxHealth = 100;
+    public float quickReviveTime = 3;
+    public float baseReviveTime = 6;
     public bool dead = false;
     public bool iZombie = false;
 
+    float reviveTime = 0;
     float healingTime = 1;
     float healingTimer = Mathf.Infinity;
 
@@ -20,6 +23,7 @@ public class Health : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
         animator = GetComponent<Animator>();
+        reviveTime = baseReviveTime;
     }
 
     private void Update()
@@ -62,5 +66,15 @@ public class Health : MonoBehaviour
             GetComponent<Zombie>().Dead();
         else if (GetComponent<Player>())
             GetComponent<Player>().Dead();
+    }
+
+    public void DecreaseReviveTime()
+    {
+        reviveTime = quickReviveTime;
+    }
+
+    public void IncreaseReviveTime()
+    {
+        reviveTime = baseReviveTime;
     }
 }

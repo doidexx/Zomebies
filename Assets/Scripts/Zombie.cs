@@ -20,22 +20,16 @@ public class Zombie : MonoBehaviour
     Transform player = null;
     Animator animator = null;
 
-    //temporary attack delay
-    float attackRate = 1f;
-    float timeSinceLastAttack = Mathf.Infinity;
-
     private void Start()
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-        baseSpeed = agent.speed;
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        target = player;
+        baseSpeed = agent.speed;
     }
 
     private void Update()
     {
-        timeSinceLastAttack += Time.deltaTime;
         if (agent.enabled == false)
             return;
         PrioritizeTarget();
@@ -43,20 +37,14 @@ public class Zombie : MonoBehaviour
         {
             float distanceToTarget = Vector3.Distance(target.position, transform.position);
             if (distanceToTarget < agent.stoppingDistance)
-            {
-                agent.isStopped = true;
-            }
-            else
-            {
-                agent.isStopped = false;
-                animator.SetBool("Attack", false);
-            }
-            
-            if (agent.isStopped)
                 AttackTarget();
+            else
+                animator.SetBool("Attack", false);
         }
         if (agent != null && agent.enabled == true)
             animator.SetFloat("Speed", agent.velocity.magnitude);
+        if (animator.enabled)
+            animator.SetBool("Inside", inside);
     }
 
     private void AttackTarget()
@@ -64,12 +52,7 @@ public class Zombie : MonoBehaviour
         //trigger animation
         Vector3 lookAtPosition = new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z);
         transform.LookAt(lookAtPosition);
-        if (timeSinceLastAttack < attackRate)
-        {
-            animator.SetBool("Attack", true);
-            return;
-        }
-        timeSinceLastAttack = 0;
+        animator.SetBool("Attack", true);
     }
 
     private void DamageTarget() //Trigger on animation event
@@ -96,7 +79,7 @@ public class Zombie : MonoBehaviour
         Barricade[] barricades = FindObjectsOfType<Barricade>();
         foreach (var barricade in barricades)
         {
-            float distance = Vector3.Distance(barricade.transform.position, transform.position);
+            float distance = Vector3.Distance(barricade.transform.position, this.transform.position);
             if (distance > distanceToTargetBarricade || barricade.GetComponent<Health>().dead == true)
                 continue;
             return barricade.transform;

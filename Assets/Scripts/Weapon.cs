@@ -38,16 +38,27 @@ public class Weapon : MonoBehaviour
 
     RaycastHit hit;
     RaycastHit[] hits;
+    Player player = null;
 
     private void Start()
     {
         startingPosition = transform.localPosition;
+        player = GetComponentInParent<Player>();
     }
 
     private void Update()
     {
         timeSinceLastShot += Time.deltaTime;
+        AimDown();
 
+        if (Input.GetKeyDown(KeyCode.R) && magazineAmmo != magazineSize)
+            Reload();//replace for animation trigger
+
+        Fire();
+    }
+
+    private void Fire()
+    {
         if (timeSinceLastShot < fireRate) return;
         if (auto == false)
         {
@@ -59,7 +70,10 @@ public class Weapon : MonoBehaviour
             if (Input.GetMouseButton(0))
                 Shoot();
         }
+    }
 
+    private void AimDown()
+    {
         if (Input.GetMouseButton(1))
         {
             transform.localPosition = Vector3.Lerp(transform.localPosition, adsPosition, aimDownSpeed);
@@ -69,19 +83,6 @@ public class Weapon : MonoBehaviour
         {
             transform.localPosition = Vector3.Lerp(transform.localPosition, startingPosition, aimDownSpeed);
             ads = false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.R) && magazineAmmo != magazineSize)
-        {
-            if (GameManager.speedCola == true)
-            {
-                //Get animation and speed up the speed
-            }
-            if (GameManager.electricCherry ==  true)
-            {
-                //damage everything around the player
-            }
-            Reload();//replace for animation trigger
         }
     }
 
@@ -126,6 +127,14 @@ public class Weapon : MonoBehaviour
         int ammoToConsume = magazineSize - magazineAmmo;
         currentAmmo = Mathf.Max(0, currentAmmo - ammoToConsume);
         magazineAmmo = Mathf.Min(magazineSize, magazineAmmo + currentAmmo);
+        if (player.CheckOwnDrinks(DrinkNames.SpeedCola))
+        {
+            //increase reload animtion speed
+        }
+        if (player.CheckOwnDrinks(DrinkNames.ElectricCherry))
+        {
+            //Do Damage to every zombie around the player
+        }
     }
 
     void HitTarget()
@@ -162,7 +171,7 @@ public class Weapon : MonoBehaviour
                 damageToDo = damage;
                 break;
         }
-        if (GameManager.doubleTap == true)
+        if (GetComponentInParent<Player>().CheckOwnDrinks(DrinkNames.DoubleTap))
             damageToDo *= 2;
         return damageToDo;
     }
