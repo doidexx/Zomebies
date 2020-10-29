@@ -11,7 +11,6 @@ public class PackAPunch : MonoBehaviour
 
     float timeSinceBought = Mathf.Infinity;
     float timeSinceAvailable = Mathf.Infinity;
-    int weaponID = 0;
     int weaponIndex = 0;
     bool waiting = false;
 
@@ -34,23 +33,26 @@ public class PackAPunch : MonoBehaviour
         }
     }
 
-    private int GetPackedWeapon(int id)
+    private bool GetPackedWeapon(int id)
     {
         for (int i = 0; i < weapons.Length; i++)
         {
-            if (weapons[i].ID == id)
-                return i;
+            if (weapons[i].ID != id)
+                continue;
+            weaponIndex = i;
+            return true;
         }
-        return 0;
+        return false;
     }
 
-    public void Buy(Player player)
+    public void Buy(Player player, Weapon weapon)
     {
-        weaponID = player.currentWeaponIndex;
+        if (GetPackedWeapon(weapon.ID) == false)
+            return;
+        FindObjectOfType<GameManager>().ConsumePoints(cost);
         player.RemoveActiveGun();
         timeSinceBought = 0;
         inUse = true;
         waiting = true;
-        weaponIndex = GetPackedWeapon(weaponID);
     }
 }

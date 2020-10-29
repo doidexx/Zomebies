@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public Drink[] drinks = new Drink[4];
 
     float vertical = 0;
+    int weaponIndexer = 0;
 
     CharacterController controller = null;
     GameManager gameManager = null;
@@ -39,6 +40,18 @@ public class Player : MonoBehaviour
         Physics.Raycast(GetRay(), out hit, Mathf.Infinity);
         if (weapons[currentWeaponIndex] != null)
             uiManager.UpdateAmmoText(weapons[currentWeaponIndex]);
+        ScrollWeapon();
+    }
+
+    private void ScrollWeapon()
+    {
+        weaponIndexer += (int)Input.mouseScrollDelta.y;
+        if (weaponIndexer == currentWeaponIndex) return;
+        if (weaponIndexer == weapons.Length)
+            weaponIndexer = 0;
+        else if (weaponIndexer < 0)
+            weaponIndexer = weapons.Length - 1;
+        SwitchCurrentWeapon(weaponIndexer);
     }
 
     public static Ray GetRay()
@@ -99,7 +112,6 @@ public class Player : MonoBehaviour
             obstacle.Buy();
             gameManager.ConsumePoints(obstacle.cost);
         }
-
     }
 
     private void InteractWithDrink(Drink drink)
@@ -128,8 +140,7 @@ public class Player : MonoBehaviour
             return;
         if (gameManager.points < packAPunch.cost)
             return;
-        packAPunch.Buy(this);
-        gameManager.ConsumePoints(packAPunch.cost);
+        packAPunch.Buy(this, weapons[currentWeaponIndex]);
     }
 
     private void InteractWithBuyable(BuyableWeapons buyable)
@@ -144,25 +155,47 @@ public class Player : MonoBehaviour
         }
         else
         {
-            AssignWeapon(buyable.ID);
+            AssignWeapon(buyable.ID, buyable.packAPunched);
             gameManager.ConsumePoints(buyable.cost);
         }
         if (buyable.machine)
             buyable.gameObject.SetActive(false);
     }
 
-    private void AssignWeapon(int id)
+    private void AssignWeapon(int id, bool packed)
+    {
+        int slot = CheckAvailableSlot();
+        if (weapons[slot] != null)
+            weapons[slot].gameObject.SetActive(false);
+        
+        if (packed)
+            weapons[slot] = gameManager.packedWeapons[id];
+        else
+            weapons[slot] = gameManager.weapons[id];
+        SwitchCurrentWeapon(slot);
+    }
+
+    private int CheckAvailableSlot()
     {
         for (int i = 0; i < weapons.Length; i++)
         {
-            if (weapons[i] != null)
-                continue;
-            weapons[i] = gameManager.weapons[id];
-            break;
+            if (weapons[i] == null)
+                return i;
         }
+        return currentWeaponIndex;
     }
 
-    public Weapon GetOwnWeapon(int ID)
+    private void SwitchCurrentWeapon(int index)
+    {
+        if (weapons[index] == null)
+            return;
+        if (weapons[currentWeaponIndex] != null)
+            weapons[currentWeaponIndex].gameObject.SetActive(false);
+        currentWeaponIndex = index;
+        weapons[index].gameObject.SetActive(true);
+    }
+
+    private Weapon GetOwnWeapon(int ID)
     {
         foreach (Weapon weapon in weapons)
         {
@@ -191,44 +224,28 @@ public class Player : MonoBehaviour
 
     public void RemoveActiveGun()
     {
-        int index = currentWeaponIndex;
+        int index = 0;
         if (currentWeaponIndex + 1 == weapons.Length)
-            currentWeaponIndex = 0;
+            index = 0;
         else
-            currentWeaponIndex++;
-        weapons[index].gameObject.SetActive(false);
-        weapons[index] = null;
+            index = currentWeaponIndex + 1;
+        weapons[currentWeaponIndex].gameObject.SetActive(false);
+        weapons[currentWeaponIndex] = null;
+        SwitchCurrentWeapon(index);
     }
 
-    public void AddWeaponSlot()
+    public void ChangeNumberOfSlots(int slots)
     {
         Weapon[] oldWeapons = weapons;
-        weapons = new Weapon[3];
+        weapons = new Weapon[slots];
         for (int i = 0; i < oldWeapons.Length; i++)
-        {
             weapons[i] = oldWeapons[i];
-        }
-    }
-
-    public void ReduceWeaponSlots()
-    {
-        Weapon[] oldWeapons = weapons;
-        weapons = new Weapon[2];
-        for (int i = 0; i < weapons.Length; i++)
-        {
-            weapons[i] = oldWeapons[i];
-        }
-    }
-
-    private void SwitchCurrentWeapon()
-    {
-        
     }
 
     public void Dead()
     {
         drinks = new Drink[4];
-        ReduceWeaponSlots();
+        ChangeNumberOfSlots(2);
         GameManager.ClearDrinks();
     }
 }

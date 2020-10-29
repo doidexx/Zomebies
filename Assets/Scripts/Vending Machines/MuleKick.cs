@@ -9,6 +9,6 @@ public class MuleKick : Drink
 
     public override void GetEffect(Player player)
     {
-        player.AddWeaponSlot();
+        player.ChangeNumberOfSlots(3);
     }
 }
