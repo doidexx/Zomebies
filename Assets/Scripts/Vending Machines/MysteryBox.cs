@@ -27,7 +27,7 @@ public class MysteryBox : MonoBehaviour
             {   
                 if (weapons[weaponIndex].gameObject.activeSelf)
                     weapons[weaponIndex].gameObject.SetActive(false);
-                weaponIndex = (int)Random.Range(0, weapons.Length);
+                weaponIndex = (int)Random.Range(0, weapons.Length * 1.5f);
                 weapons[weaponIndex].gameObject.SetActive(true);
                 timeSinceShowed = 0;
             }

@@ -88,6 +88,7 @@ public class Player : MonoBehaviour
         if (!Physics.Raycast(GetRay(), out hit, interactionDistance))
         {
             //turn UI off
+            if (uiManager != null)
             uiManager.UpdateInteractableText("");
             return;
         }
@@ -106,6 +107,7 @@ public class Player : MonoBehaviour
             InteractWithPackAPunch(packAPunch);
         else if (obstacle != null)
         {
+            if (uiManager != null)
             uiManager.UpdateInteractableText(obstacle.blockedArea + ": $" + obstacle.cost.ToString());
             if (CheckInteractionInput() == false)
                 return;
@@ -124,6 +126,7 @@ public class Player : MonoBehaviour
     private void InteractWithDrink(Drink drink)
     {
         //Turn UI on with drink drinkMame
+            if (uiManager != null)
         uiManager.UpdateInteractableText(drink.drinkName + ": $" + drink.cost.ToString());
         if (CheckInteractionInput() == false)
             return;
@@ -134,6 +137,7 @@ public class Player : MonoBehaviour
     private void InteractWithMysteryBox(MysteryBox mysteryBox)
     {
         //Turn UI on with drink drinkMame
+            if (uiManager != null)
         uiManager.UpdateInteractableText("Mystery Box" + ": $" + mysteryBox.cost.ToString());
         if (CheckInteractionInput() == false)
             return;
@@ -148,6 +152,7 @@ public class Player : MonoBehaviour
     private void InteractWithPackAPunch(PackAPunch packAPunch)
     {
         if (weapons[currentWeaponIndex] != null)
+            if (uiManager != null)
             uiManager.UpdateInteractableText(packAPunch.name + " " + weapons[currentWeaponIndex]._name);
         if (CheckInteractionInput() == false)
             return;
@@ -168,6 +173,7 @@ public class Player : MonoBehaviour
 
         if (GetOwnWeapon(buyable.ID) != null)
         {
+            if (uiManager != null)
             uiManager.UpdateInteractableText(buyable.name + "Ammo: $" + buyable.ammoCost.ToString());
             if (CheckInteractionInput() == false)
             return;
@@ -176,6 +182,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            if (uiManager != null)
             uiManager.UpdateInteractableText(buyable.name + ": $" + buyable.cost.ToString());
             if (CheckInteractionInput() == false)
             return;

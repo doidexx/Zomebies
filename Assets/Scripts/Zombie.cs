@@ -36,7 +36,7 @@ public class Zombie : MonoBehaviour
         if (target != null)
         {
             float distanceToTarget = Vector3.Distance(target.position, transform.position);
-            if (distanceToTarget < agent.stoppingDistance)
+            if (distanceToTarget <= agent.stoppingDistance)
                 AttackTarget();
             else
                 animator.SetBool("Attack", false);
