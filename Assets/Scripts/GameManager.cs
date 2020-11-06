@@ -48,6 +48,17 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
+    public Weapon GetNewPackedWeapon(int ID)
+    {
+        foreach (Weapon w in packedWeapons)
+        {
+            if (w.ID != ID)
+                continue;
+            return w;
+        }
+        return null;
+    }
+
     public static void ClearDrinks()
     {
         doubleTap = false;

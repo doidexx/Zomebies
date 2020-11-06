@@ -7,6 +7,7 @@ TagManager:
   - Head
   - Extremity
   - Torso
+  - Map
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - 
   - 
   - Player
-  - 
-  - 
+  - Weapon
+  - Zombie
   - 
   - 
   - 

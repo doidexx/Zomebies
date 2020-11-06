@@ -27,7 +27,7 @@ public class MysteryBox : MonoBehaviour
             {   
                 if (weapons[weaponIndex].gameObject.activeSelf)
                     weapons[weaponIndex].gameObject.SetActive(false);
-                weaponIndex = (int)Random.Range(0, weapons.Length * 1.5f);
+                weaponIndex = (int)Random.Range(0, weapons.Length);
                 weapons[weaponIndex].gameObject.SetActive(true);
                 timeSinceShowed = 0;
             }
@@ -35,10 +35,13 @@ public class MysteryBox : MonoBehaviour
         }
         else if (timeSinceLocked > despawnTime)
         {
+            weapons[weaponIndex].GetComponent<Collider>().enabled = false;
             if (weapons[weaponIndex].gameObject.activeSelf)
                 weapons[weaponIndex].gameObject.SetActive(false);
             inUse = false;
         }
+        else
+            weapons[weaponIndex].GetComponent<Collider>().enabled = true;
     }
 
     public void Buy(Player player)
