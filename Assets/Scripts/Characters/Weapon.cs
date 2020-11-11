@@ -142,7 +142,6 @@ public class Weapon : MonoBehaviour
 
         Vector3 offsetPosition = new Vector3(xDirection, yDirection, zDirection);
         Vector3 offsetDirection = Vector3.Normalize(offsetPosition - Camera.main.transform.position);
-        print("Hitting ");
         return offsetDirection;
     }
 

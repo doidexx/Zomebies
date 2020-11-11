@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PickupsAnimation))]
 public class Carpenter : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)

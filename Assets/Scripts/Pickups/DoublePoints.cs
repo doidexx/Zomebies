@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PickupsAnimation))]
 public class DoublePoints : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)

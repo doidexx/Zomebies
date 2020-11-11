@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Health))]
+[RequireComponent(typeof(Health), typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
     [Header("Stats")]
@@ -59,7 +59,8 @@ public class Player : MonoBehaviour
 
     public static Ray GetRay()
     {
-        return Camera.main.ScreenPointToRay(Input.mousePosition);
+        Vector2 screenCenter = new Vector2(Screen.width/2, Screen.height/2);
+        return Camera.main.ScreenPointToRay(screenCenter);
     }
 
     private void Movement()

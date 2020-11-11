@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(PickupsAnimation))]
 public class Nuke : MonoBehaviour
 {
     public int pointsForPickup = 300;

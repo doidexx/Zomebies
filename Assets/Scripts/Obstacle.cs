@@ -1,11 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(MeshCollider), typeof(NavMeshObstacle))]
 public class Obstacle : MonoBehaviour
 {
     public string blockedArea = "";
     public int cost = 0;
+
+    private void Start()
+    {
+        GetComponent<NavMeshObstacle>().carving = true;
+    }
 
     public void Buy()
     {

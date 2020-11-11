@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2790852701572399762
+--- !u!1 &7917002297914210103
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,11 +8,12 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3310366806389676072}
-  - component: {fileID: 1900257938888906637}
-  - component: {fileID: 4448401733894677319}
-  - component: {fileID: 3060882519829561287}
-  - component: {fileID: 3060882519829561284}
+  - component: {fileID: 7917002297914632983}
+  - component: {fileID: 7917002297913338679}
+  - component: {fileID: 7917002297912207863}
+  - component: {fileID: 7917002297916399415}
+  - component: {fileID: 7917002297914241435}
+  - component: {fileID: -6711593802015370132}
   m_Layer: 0
   m_Name: Electric Cherry
   m_TagString: Untagged
@@ -20,50 +21,48 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3310366806389676072
+--- !u!4 &7917002297914632983
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2790852701572399762}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 13.4, y: -1, z: 25.511}
+  m_GameObject: {fileID: 7917002297914210103}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.982, y: -0.953, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!33 &1900257938888906637
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &7917002297913338679
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2790852701572399762}
-  m_Mesh: {fileID: -3145058497754134291, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
---- !u!23 &4448401733894677319
+  m_GameObject: {fileID: 7917002297914210103}
+  m_Mesh: {fileID: 4300002, guid: f60d719e03de4db479030669f6e80b36, type: 3}
+--- !u!23 &7917002297912207863
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2790852701572399762}
+  m_GameObject: {fileID: 7917002297914210103}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
+  m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -951720642154281844, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
-  - {fileID: -338611644186386802, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
-  - {fileID: -4872552678638238010, guid: e9fe7c797c7ce9e48accb485ef0616db, type: 3}
+  - {fileID: 2100000, guid: bc5b7a1886d2c594790fcaf715870b46, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,31 +84,47 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3060882519829561287
+--- !u!65 &7917002297916399415
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2790852701572399762}
+  m_GameObject: {fileID: 7917002297914210103}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.9999995, y: 2.7499998, z: 1.1267959}
-  m_Center: {x: -0.5000001, y: 1.3749999, z: 0.06339705}
---- !u!114 &3060882519829561284
+  m_Size: {x: 0.79987717, y: 1.9213344, z: 0.53271866}
+  m_Center: {x: 0, y: 0.9606672, z: 0}
+--- !u!208 &7917002297914241435
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7917002297914210103}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.4, y: 0.961, z: 0.266}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.961, z: 0}
+  m_TimeToStationary: 0.5
+--- !u!114 &-6711593802015370132
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2790852701572399762}
+  m_GameObject: {fileID: 7917002297914210103}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 647b7d440d0d0ca46a5f22ab97744baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   drinkName: 5
-  cost: 0
+  cost: 10
   owned: 0
