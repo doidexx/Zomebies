@@ -14,44 +14,41 @@ public class Weapon : MonoBehaviour
     public int magazineAmmo = 10;
     [Header("Stats")]
     public int damage = 30;
-    public float range = 40;
-    public float fireRate = 0.5f;
+    [Range(0,1)]
+    public float spread = 5;
     public float reloadSpeed = 1f;
-    [Header("Settings")]
-    [Range(0, 0.15f)]
-    public float hipSpread = 0.1f;
-    [Range(0, 0.15f)]
-    public float aDSSpread = 0;
     public int ammoPerShot = 1;
     public int pellets = 1;
+    public float fireRate = 0.5f;
+    public float recoil = 5;
+    public float range = 40;
     public float aimDownSpeed = 0.1f;
+
     [Header("Specifics")]
     public bool packed = false;
     public bool ads = false;
     public bool auto = false;
     public bool shootsThroughTarget = false;
-    [Header("External Gameobjects")]
     public GameObject hitEffectPlaceHolder = null;
-    public GameObject bulletCast = null;
-    public Transform castSpawnPoint = null;
+    public Vector3 adsPosition = Vector3.zero;
 
     float impactForce = 1000f;
-    bool canShoot = true;
+    float timeSinceLastShot = Mathf.Infinity;
+    Vector3 startingPosition = Vector3.zero;
 
     RaycastHit hit;
     RaycastHit[] hits;
     Player player = null;
-    Animator animator = null;
 
     private void Start()
     {
+        startingPosition = transform.localPosition;
         player = GetComponentInParent<Player>();
-        animator = GetComponent<Animator>();
-        animator.SetFloat("Shoot Animation Speed", fireRate);
     }
 
     private void Update()
     {
+        timeSinceLastShot += Time.deltaTime;
         AimDown();
 
         if (Input.GetKeyDown(KeyCode.R) && magazineAmmo != magazineSize)
@@ -62,6 +59,7 @@ public class Weapon : MonoBehaviour
 
     private void Fire()
     {
+        if (timeSinceLastShot < fireRate) return;
         if (auto == false)
         {
             if (Input.GetMouseButtonDown(0))
@@ -77,44 +75,46 @@ public class Weapon : MonoBehaviour
     private void AimDown()
     {
         if (Input.GetMouseButton(1))
+        {
+            transform.localPosition = Vector3.Lerp(transform.localPosition, adsPosition, aimDownSpeed);
             ads = true;
+        }
         else
+        {
+            transform.localPosition = Vector3.Lerp(transform.localPosition, startingPosition, aimDownSpeed);
             ads = false;
-        animator.SetBool("ADS", ads);
+        }
     }
 
     public void Shoot()
     {
-        if (magazineAmmo == 0 || canShoot == false) return;
-        animator.SetTrigger("Shoot");
-        canShoot = false;
+        if (magazineAmmo == 0) return;
         ConsumeAmmo();
+        timeSinceLastShot = 0;
+        
         for (int i = 0; i < pellets; i++)
         {
+            //replace for actual muzzle flash
+            hitEffectPlaceHolder.GetComponent<ParticleSystem>().Play();
+            //create a spark going in the ray direction coming out the gun
+            float distance = Vector3.Distance(Player.hit.point, Player.GetRay().origin);
+            float xDirection = Player.hit.point.x + Random.Range(-spread, spread) * distance;
+            float yDirection = Player.hit.point.y + Random.Range(-spread, spread) * distance;
+            float zDirection = Player.hit.point.z + Random.Range(-spread, spread) * distance;
+
+            Vector3 offsetPosition = new Vector3(xDirection, yDirection, zDirection);
+            Vector3 offsetDirection = Vector3.Normalize(offsetPosition - Camera.main.transform.position);
+
             if (ads == false)
-                if (Physics.Raycast(Camera.main.transform.position, GetOffsetDireaction(hipSpread), out hit, range))
+            {
+                if (Physics.Raycast(Camera.main.transform.position, offsetDirection, out hit, range))
                     HitTarget();
-
-            else if (Physics.Raycast(Camera.main.transform.position, GetOffsetDireaction(aDSSpread), out hit, range))
+            }
+            else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, range))
+            {
                 HitTarget();
+            }
         }
-    }
-
-    public void CanShootAgain()//Animation Event
-    {
-        canShoot = true;
-    }
-
-    private Vector3 GetOffsetDireaction(float spread)
-    {
-        float distance = Vector3.Distance(Player.hit.point, Player.GetRay().origin);
-        float xDirection = Player.hit.point.x + Random.Range(-spread, spread) * distance;
-        float yDirection = Player.hit.point.y + Random.Range(-spread, spread) * distance;
-        float zDirection = Player.hit.point.z + Random.Range(-spread, spread) * distance;
-
-        Vector3 offsetPosition = new Vector3(xDirection, yDirection, zDirection);
-        Vector3 offsetDirection = Vector3.Normalize(offsetPosition - Camera.main.transform.position);
-        return offsetDirection;
     }
 
     public void ConsumeAmmo()
@@ -175,32 +175,10 @@ public class Weapon : MonoBehaviour
             damageToDo *= 2;
         return damageToDo;
     }
-    
-    public void SpawnBulletCast()//Animation Event
-    {
-        Instantiate(bulletCast, castSpawnPoint.position, castSpawnPoint.rotation);
-    }
-
-    public void ReadyWeapon()//Animation Event
-    {
-        //make canshoot false by default for this
-        canShoot = true;
-    }
 
     public void MaxOutAmmo()
     {
         currentAmmo = maxAmmo;
-    }
-
-    private void OnEnable()
-    {
-        // animator.SetTrigger("ReadyUp");
-    }
-
-    private void OnDisable()
-    {
-        // canShoot = false; uncomment after making the ready up animation
-        animator.Rebind();
     }
 
     private void OnDrawGizmos()

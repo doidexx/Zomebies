@@ -6,8 +6,8 @@ using UnityEngine.AI;
 [RequireComponent(typeof(Health))]
 public class Barricade : MonoBehaviour
 {
+    [TextArea(5,5)]
     public string message = "";
-    public MeshCollider barrierCollider = null;
 
     Health health = null;
     UIManager uIManager = null;
@@ -25,13 +25,13 @@ public class Barricade : MonoBehaviour
         if (health.healthPoints == 0)
         {
             GetComponentInChildren<MeshRenderer>().enabled = false;
-            barrierCollider.enabled = false;
+            GetComponentInChildren<MeshCollider>().enabled = false;
             // link.activated = true;
         }
         else
         {
             GetComponentInChildren<MeshRenderer>().enabled = true;
-            barrierCollider.enabled = true;
+            GetComponentInChildren<MeshCollider>().enabled = true;
             // link.activated = false;
         }
     }
